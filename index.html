@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>HTMLtoUTF8 Entities and codes</title>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+	<script type="text/javascript" src="./waypoints.js"></script>
+	<script type="text/javascript" src="./jquery.hashchange.min.js"></script>
+</head>
+<body>
+	<style type="text/css">
+		*{margin:0;border:0;padding:0}
+		h1{font-family:"arial black", arial, helvetica, sans-serif; border-bottom:1px solid black; position: fixed; top:0px; background-color:white;width:100%; height:40px;z-index:10;}
+		h1 nav{
+			display:block;
+			position:absolute;
+			right:20px;
+			top:5px;
+		}
+		h1 a{
+			float:right;
+			display:block;
+			font-size:10px;
+			margin:5px;
+			position:relative;
+			margin-left:15px;
+		}
+		#entities{list-style:none;display:block;width:100%;margin-top:70px;position:relative;}
+		#entities li:hover{color:#FFF;background:#000}
+		#entities li{width:120px;float:left;list-style:none;display:block;position:relative;height:40px;cursor:pointer;margin:10px;padding:2px}
+		#entities li small{position:absolute;bottom:-2px;left:35%}
+		#entities li b{font-size:30px;display:block;float:left;}
+		hr{clear:both;height:70px;background:black URL(./loading.gif) center center no-repeat;border:none;width:100%;position:relative;}
+	</style>
+	<h1>HTML and UTF-8 entities tool <nav id="autogen">
+		<a href="#0x1024">1024</a>
+		<a href="#0x2048">2048</a>
+		<a href="#0x12400">Util</a>
+		<a href="">Normal</a>
+	</nav></h1>
+	<ul id="entities">
+	</ul>
+	<hr id="end" />
+	<script type="text/javascript">
+		function printEntity(fromIndex, stepSize){
+			var maxPosition = fromIndex + stepSize;
+			var imaginary = "";
+			for(fromIndex;fromIndex<=maxPosition;fromIndex+=1){
+				imaginary+= "<li><b>&#"+fromIndex+";</b><i>:"+
+				fromIndex+"</i><small>\\"+
+				fromIndex.toString(16)+"</small></li>"
+			}
+			$("#entities").get(0).innerHTML+=imaginary;
+			return fromIndex;
+		}	
+		var finalIndex = 0;
+		finalIndex = printEntity(0,255);
+		$(document).ready(function(){
+			$(window).hashchange(function(){
+				$("#entities").html("");
+				hashItens = location.hash.replace("#","").split("x");
+				finalIndex = printEntity(parseInt(hashItens[0]),
+					parseInt(hashItens[1]));
+				$("#end").remove();
+			})
+			$("#end").waypoint(function(){
+				finalIndex = printEntity(finalIndex,255);
+				$.waypoints('refresh');
+			}, {
+				offset: 'bottom-in-view'
+			})
+		})	
+	</script>
+</body>
+</html>
